@@ -1,0 +1,24 @@
+version: "3.9"
+
+# Pi deployment — Ollama runs on the host, documents on local SSD.
+# Usage:
+#   docker compose run agent sort --path /data/input --output /data/output
+#   docker compose run agent sort --path /data/input --output /data/output --execute
+#   docker compose run agent query "tax invoices 2024"
+
+services:
+  agent:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - /mnt/ssd/documents:/data/input:ro       # source docs — read-only in container
+      - /mnt/ssd/sorted:/data/output             # sort destination
+      - /mnt/ssd/.chromadb:/app/.chromadb        # persistent vector store
+      - ../config.yaml:/app/config.yaml
+      - ../sort_log.jsonl:/app/sort_log.jsonl
+    environment:
+      - OLLAMA_HOST=http://host-gateway:11434
+    extra_hosts:
+      - "host-gateway:host-gateway"
+    network_mode: host

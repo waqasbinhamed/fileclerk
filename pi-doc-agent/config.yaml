@@ -1,0 +1,52 @@
+# Pi Document Agent — Configuration
+# Edit this file to customise paths, model settings, and taxonomy.
+
+# ── Paths ────────────────────────────────────────────────────────────────────
+# These are overridden by --path and --output CLI flags when provided.
+input_path: /mnt/ssd/documents
+output_path: /mnt/ssd/sorted
+
+# ── ChromaDB (persistent vector store) ───────────────────────────────────────
+chroma_path: .chromadb
+collection_name: documents
+
+# ── Ollama ───────────────────────────────────────────────────────────────────
+# Ollama must run on the HOST machine, not inside the container.
+# In Docker: override with OLLAMA_HOST env variable.
+ollama_host: http://localhost:11434
+ollama_model: phi3:mini
+
+# ── Classification ────────────────────────────────────────────────────────────
+# Documents with confidence below this threshold are marked 'needs_review'
+# and will NOT be moved.
+confidence_threshold: 0.6
+
+# ── Embedding ─────────────────────────────────────────────────────────────────
+# Model downloads automatically on first run (~80 MB).
+# Runs on CPU — suitable for Raspberry Pi 4.
+embedding_model: all-MiniLM-L6-v2
+batch_size: 16  # lower this if you see OOM errors on Pi
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+sort_log: sort_log.jsonl
+skipped_log: skipped.log
+
+# ── Taxonomy ──────────────────────────────────────────────────────────────────
+# The LLM prompt lists these categories; the model must choose one.
+# Add, remove, or rename entries freely — just re-run classification afterwards.
+taxonomy:
+  - Finance
+  - Finance/Invoices
+  - Finance/Tax
+  - Finance/Receipts
+  - Work
+  - Work/Reports
+  - Work/Code
+  - Work/Presentations
+  - Research
+  - Research/Papers
+  - Personal
+  - Personal/Health
+  - Personal/Travel
+  - Archive
+  - Unsorted

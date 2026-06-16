@@ -1,0 +1,38 @@
+# Vector store — never commit; mount as volume
+.chromadb/
+
+# Logs — contain file paths and may be large
+sort_log.jsonl
+skipped.log
+
+# Evaluation output — regenerate with eval scripts
+eval/ground_truth.jsonl
+eval/results.jsonl
+eval/results_metrics.json
+
+# Documents — never commit user files
+data/
+*.pdf
+*.docx
+*.xlsx
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Environment
+.env
+.env.*
+
+# macOS
+.DS_Store

@@ -1,0 +1,21 @@
+version: "3.9"
+
+# Mac dev — Ollama runs on the Mac host, documents from ~/Documents.
+# Usage:
+#   docker compose -f docker/docker-compose.dev.yml build
+#   docker compose -f docker/docker-compose.dev.yml run agent index --path /data/input
+#   docker compose -f docker/docker-compose.dev.yml run agent sort --path /data/input --output /data/output
+
+services:
+  agent:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ~/Documents/test_docs:/data/input:ro
+      - ~/Documents/sorted:/data/output
+      - ../.chromadb:/app/.chromadb
+      - ../config.yaml:/app/config.yaml
+    environment:
+      # host.docker.internal resolves to the Mac host from inside the container
+      - OLLAMA_HOST=http://host.docker.internal:11434
